@@ -2,18 +2,30 @@
     &-radios {
         display: flex;
         align-content: center;
-        &-label{
+
+        &-label {
             margin-right: 10px;
         }
+
         label {
             display: flex;
             align-items: center;
+
+            span {
+                margin-bottom: 0;
+                color: #444;
+            }
         }
 
-        span {
-            margin-bottom: 0;
-            color: #444;
-        }
     }
 
+    &-error {
+        font-size: 12px;
+        color: #e66262;
+    }
+}
+//Angular related styles
+form .ng-invalid.ng-touched{
+    background: #ffe7e7;
+    border-color: #e66262;
 }
