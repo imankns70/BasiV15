@@ -24,14 +24,16 @@ import { DonutService } from '../../services/donut.service';
 export class DonutListComponent implements OnInit {
 
   constructor(private donutService: DonutService) { }
- 
+
   donuts!: Donut[];
   trackById(index: number, value: Donut) {
     return value.id;
   }
   ngOnInit(): void {
-    this.donuts = this.donutService.donuts
-   
+    this.donutService.
+    read()
+    .subscribe((dounts: Donut[]) => this.donuts = dounts);
+
   }
 
 }

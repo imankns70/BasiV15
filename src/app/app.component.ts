@@ -12,6 +12,7 @@ import { Component, OnInit } from '@angular/core';
     </header>
   <!-- <donut-list></donut-list> -->
   <donut-single></donut-single>
+  
   </div>
   
   `

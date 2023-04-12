@@ -6,18 +6,37 @@ import { DonutService } from '../../services/donut.service';
   selector: 'donut-single',
   styleUrls: ['./donut-single.component.scss'],
   template: `<div>
-    <donut-form [donut]="donut" (create)="onCreate($event)"></donut-form>
+    <donut-form [donut]="donut" 
+    (create)="onCreate($event)"
+    (update)="onUpdate($event)"
+    (delete)="onDelete($event)"
+    ></donut-form>
   </div>`,
 })
 export class DonutSingleComponent implements OnInit {
   donut!: Donut;
   constructor(private donutService: DonutService) { }
   ngOnInit(): void {
-    const id = 'as4';
-    this.donut = this.donutService.donuts.find((donut: Donut) => donut.id == id) || { name: '', icon: '', price: 0, description: '' };
+
+    this.donutService
+      .readOne('D3AyBpF')
+      .subscribe((donut: Donut) => (this.donut = donut));
+
   }
 
   onCreate(donut: Donut) {
-    console.log('onCreate', donut)
+    this.donutService.create(donut).subscribe((donut: Donut) => console.log('Created Sucessfully'));
+  }
+
+  onUpdate(donut: Donut) {
+    this.donutService.update(donut).subscribe({
+      next:(donut: Donut) => console.log('Update Sucessfully'),
+      error:(err)=> console.log('onUpdate error...',err)
+    });
+  }
+
+  onDelete(donut: Donut) {
+    this.donutService.delete(donut)
+    .subscribe(()=> console.log('deleted Sucessfully'));
   }
 }
