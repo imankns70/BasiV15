@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Donut } from '../models/donut.model';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { catchError, delay, map, of, retry, retryWhen, take, tap, throwError } from 'rxjs';
+import { catchError, map, of, retry, tap, throwError } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -10,6 +10,7 @@ export class DonutService {
   constructor(private httpclient: HttpClient) { }
 
   read() {
+    debugger
     if (this.donuts.length) {
       return of(this.donuts)
     }
@@ -18,19 +19,22 @@ export class DonutService {
       "Api-Token": "as4d4sa"
     });
 
-   
+
     const options = {
       headers
     }
     return this.httpclient.get<Donut[]>(`/api/donuts`, options).pipe(
-      tap((donuts: Donut[]) => this.donuts == donuts),
+      tap((donuts: Donut[]) => {
+        
+        this.donuts == donuts
+      }),
       retry({ count: 3, delay: 5000 }),
       //retryWhen((errors)=> errors.pipe(delay(5000),take(2))),
       catchError(this.errorHandler)
     );
   }
 
-  readOne(id: string) {
+  readOne(id: string | null) {
     return this.read().pipe(
       map((donuts: Donut[]) => {
         const donut = donuts.find((donut: Donut) => donut.id == id);
@@ -46,9 +50,9 @@ export class DonutService {
   create(payload: Donut) {
     return this.httpclient.post<Donut>(`/api/donuts`, payload)
       .pipe(
-        tap((donut: Donut) => {
-          this.donuts = [...this.donuts, donut]
-        }),
+        // tap((donut: Donut) => {
+        //   this.donuts = [...this.donuts, donut]
+        // }),
         catchError(this.errorHandler)
       )
 
@@ -59,12 +63,12 @@ export class DonutService {
       .pipe(
         tap((donut: Donut) => {
 
-          this.donuts = [...this.donuts, donut];
-          // this.donuts = this.donuts.map((donut: Donut) => {
-          //   if (donut.id == payload.id)
-          //     return payload;
-          //   return donut;
-          // })
+          this.donuts = this.donuts.map((donut: Donut) => {
+            
+            if (donut.id == payload.id)
+              return payload;
+            return donut;
+          })
         })
         ,
         catchError(this.errorHandler)

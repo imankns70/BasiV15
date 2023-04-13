@@ -90,23 +90,33 @@ import { Donut } from '../../models/donut.model';
 
     <button type="button" 
     class="btn btn--green" 
-     (click)="handleCreate(form)">
+     (click)="handleCreate(form)"
+     *ngIf="!isEdit"
+     >
       Create
     </button>
 
     <button type="button"
      class="btn btn--green" 
     (click)="handleUpdate(form)"
+    *ngIf="isEdit"
     [disabled]="form.untouched">
     Update
   </button>
 
     <button type="button" class="btn btn--green" 
+    *ngIf="isEdit"
     (click)="handleDelete()">
     Delete
   </button>
 
-    <button type="button" class="btn btn--grey" (click)="form.resetForm()">Reset Form</button>
+    <button
+     type="button" 
+     class="btn btn--grey"
+      (click)="form.resetForm()"
+      *ngIf="form.touched || isEdit"
+     >Reset Form</button>
+      
     <div class="donut-form-working" *ngIf="form.valid && form.submitted">
       Working...
     </div>
@@ -129,6 +139,7 @@ export class DonutFormComponent {
     'zesty-lemon',
   ]
   @Input() donut!: Donut;
+  @Input() isEdit!:boolean;
 
   @Output() create = new EventEmitter<Donut>();
   @Output() update = new EventEmitter<Donut>();

@@ -6,7 +6,13 @@ import { DonutService } from '../../services/donut.service';
   selector: 'donut-list',
   template: `
   <div>
-    <ng-container *ngIf="donuts.length else nothing">
+    <div class="donut-list-actions">   
+    <a routerLink="new" class="btn btn--green">
+      New Donut
+    <img height="24" src="/assets/icon/icons8-plus.svg"/>
+  </a>
+ </div>
+    <ng-container *ngIf="donuts?.length else nothing">
       
   <donut-card 
   *ngFor="let donut of donuts; trackBy:trackById"
@@ -19,7 +25,7 @@ import { DonutService } from '../../services/donut.service';
     </ng-template>
 </div>  
   `,
-  styleUrls: ['./donut-list.component.css']
+  styleUrls: ['./donut-list.component.scss']
 })
 export class DonutListComponent implements OnInit {
 
@@ -31,8 +37,8 @@ export class DonutListComponent implements OnInit {
   }
   ngOnInit(): void {
     this.donutService.
-    read()
-    .subscribe((dounts: Donut[]) => this.donuts = dounts);
+      read()
+      .subscribe((dounts: Donut[]) => (this.donuts = dounts));
 
   }
 
